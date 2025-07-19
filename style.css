@@ -1,57 +1,304 @@
-/* style.css */
-* { box-sizing:border-box; margin:0; padding:0; }
-:root { --header-h:3rem; }
+// main.js
+document.addEventListener('DOMContentLoaded', () => {
+  // 1) Default starter templates
+  const DEFAULTS = {
+    markdown: '# Hello, Markdown!\n\n* Item 1\n* Item 2',
+    html: `<!DOCTYPE html>
+<html lang="en">
+<head><meta charset="UTF-8"><title>Preview</title></head>
+<body><h1>Hello, HTML!</h1></body>
+</html>`,
+    xml: `<note>\n  <to>User</to>\n  <from>CodeStudio</from>\n  <body>Hello, XML!</body>\n</note>`,
+    json: `{\n  "name": "Alice",\n  "age": 30\n}`,
+    yaml: `name: Bob\nage: 25\nskills:\n  - JS\n  - Python`,
+    javascript: `// JavaScript example\nconsole.log('Hello from JS');`,
+    php: `<?php\necho "Hello from PHP!";\n?>`,
+    ruby: `# Ruby example\nputs 'Hello from Ruby'`,
+    python: `# Python example\nprint("Hello from Python")`,
+    java: `// Java example\npublic class Main {\n  public static void main(String[] args) {\n    System.out.println("Hello from Java");\n  }\n}`,
+    c: `// C example\n#include <stdio.h>\nint main() {\n  printf("Hello from C\\n");\n  return 0;\n}`,
+    cpp: `// C++ example\n#include <iostream>\nint main() {\n  std::cout << "Hello from C++\\n";\n  return 0;\n}`,
+    csharp: `// C# example\nusing System;\nclass Program {\n  static void Main() {\n    Console.WriteLine("Hello from C#");\n  }\n}`,
+    vb: `' VB example\nModule Module1\n  Sub Main()\n    Console.WriteLine("Hello from VB")\n  End Sub\nEnd Module`,
+    go: `// Go example\npackage main\nimport "fmt"\nfunc main() {\n  fmt.Println("Hello from Go")\n}`,
+    rust: `// Rust example\nfn main() {\n  println!("Hello from Rust");\n}`,
+    swift: `// Swift example\nprint("Hello from Swift")`,
+    kotlin: `// Kotlin example\nfun main() {\n  println("Hello from Kotlin")\n}`,
+    sql: `-- SQL example\nCREATE TABLE people(id INT, name TEXT);\nINSERT INTO people VALUES(1, 'Alice'), (2, 'Bob');\nSELECT * FROM people;`,
+    bash: `# Bash example\necho "Hello from Bash"`,
+    text: 'Questo è un semplice file di testo. Nessuna anteprima formattata.',
+    doc: 'Anteprima non disponibile per .doc'
+  };
 
-body {
-  height:100vh;
-  display:flex;
-  flex-direction:column;
-  font-family:Arial,sans-serif;
-}
-body.light { background:#fdfdfd; color:#333; }
-body.dark  { background:#1e1e1e; color:#ddd; }
+  // 2) CodeMirror mode map
+  const MODES = {
+    markdown:  'markdown',
+    html:      'htmlmixed',
+    xml:       'xml',
+    json:      'application/json',
+    yaml:      'yaml',
+    javascript:'javascript',
+    php:       'application/x-httpd-php',
+    ruby:      'ruby',
+    python:    'python',
+    java:      'text/x-java',
+    c:         'text/x-csrc',
+    cpp:       'text/x-c++src',
+    csharp:    'text/x-csharp',
+    vb:        'text/x-vb',
+    go:        'go',
+    rust:      'rust',
+    swift:     'swift',
+    kotlin:    'text/x-kotlin',
+    sql:       'sql',
+    bash:      null,   // shell mode not loaded
+    text:      null,
+    doc:       null
+  };
 
-/* Header */
-header {
-  height:var(--header-h);
-  display:flex; align-items:center;
-  padding:0 1rem; background:#00509e; color:#fff;
-}
-header .logo { font-weight:bold; margin-right:1rem; }
-header select, header button {
-  margin-left:0.5rem; padding:0.3rem 0.6rem;
-  border:none; border-radius:4px;
-  background:#f0f0f0; color:#333;
-  cursor:pointer; font-size:0.9rem;
-}
-body.dark header select,
-body.dark header button {
-  background:#333; color:#fff;
-}
+  // 3) File extensions
+  const EXT = {
+    markdown:'md',
+    html:    'html',
+    xml:     'xml',
+    json:    'json',
+    yaml:    'yaml',
+    javascript:'js',
+    php:     'php',
+    ruby:    'rb',
+    python:  'py',
+    java:    'java',
+    c:       'c',
+    cpp:     'cpp',
+    csharp:  'cs',
+    vb:      'vb',
+    go:      'go',
+    rust:    'rs',
+    swift:   'swift',
+    kotlin:  'kt',
+    sql:     'sql',
+    bash:    'sh',
+    text:    'txt',
+    doc:     'doc'
+  };
 
-/* Editor & Preview */
-#container {
-  flex:1; display:flex; overflow:hidden;
-}
-#container > .CodeMirror { flex:1; height:100%; }
-#preview {
-  flex:1; padding:1rem; overflow:auto;
-  background:rgba(0,0,0,0.03);
-}
-body.dark #preview {
-  background:rgba(255,255,255,0.05);
-}
+  // 4) UI references
+  const selLang   = document.getElementById('language');
+  const btnLoad   = document.getElementById('load');
+  const fileIn    = document.getElementById('file-input');
+  const btnSave   = document.getElementById('save');
+  const btnReset  = document.getElementById('reset');
+  const btnTheme  = document.getElementById('theme');
+  const preview   = document.getElementById('preview');
+  const ta        = document.getElementById('editor');
 
-/* SQL tables */
-#preview table {
-  border-collapse:collapse; width:100%; margin-top:0.5rem;
-}
-#preview th, #preview td {
-  border:1px solid #aaa; padding:0.3rem 0.5rem; text-align:left;
-}
+  // 5) Restore theme
+  const savedTheme = localStorage.getItem('theme') || 'light';
+  document.body.classList.add(savedTheme);
+  btnTheme.textContent = savedTheme === 'dark' ? '☀️ Light' : '🌙 Dark';
 
-/* Responsive */
-@media(max-width:768px) {
-  #container { flex-direction:column; }
-  #container > .CodeMirror { height:50%; }
-}
+  // 6) Initialize CodeMirror
+  const editor = CodeMirror.fromTextArea(ta, {
+    mode: MODES[selLang.value],
+    lineNumbers: true,
+    theme: savedTheme === 'dark' ? 'dracula' : 'default'
+  });
+
+  // 7) HTML escape helper
+  function esc(s) {
+    return s.replace(/&/g, '&amp;')
+            .replace(/</g, '&lt;')
+            .replace(/>/g, '&gt;');
+  }
+
+  // 8) Update preview (async for Python)
+  async function updatePreview() {
+    const lang = selLang.value;
+    const code = editor.getValue();
+
+    // auto-save
+    localStorage.setItem(`code-${lang}`, code);
+
+    // default fallback
+    const noPrev = '<pre>Preview non disponibile</pre>';
+
+    switch (lang) {
+      case 'markdown':
+        preview.innerHTML = marked.parse(code);
+        break;
+      case 'html':
+        preview.innerHTML = code;
+        break;
+      case 'xml':
+      case 'yaml':
+      case 'bash':
+      case 'php':
+      case 'ruby':
+      case 'java':
+      case 'c':
+      case 'cpp':
+      case 'csharp':
+      case 'vb':
+      case 'go':
+      case 'rust':
+      case 'swift':
+      case 'kotlin':
+      case 'text':
+        preview.innerHTML = `<pre>${esc(code)}</pre>`;
+        break;
+      case 'json':
+        try {
+          const obj = JSON.parse(code);
+          preview.innerHTML = `<pre>${esc(JSON.stringify(obj, null, 2))}</pre>`;
+        } catch (e) {
+          preview.innerHTML = `<pre style="color:red">Error: ${esc(e.message)}</pre>`;
+        }
+        break;
+      case 'javascript': {
+        let out = '';
+        const origLog = console.log;
+        console.log = (...args) => (out += args.join(' ') + '\n');
+        try {
+          new Function(code)();
+        } catch (e) {
+          out += 'Error: ' + e.message;
+        }
+        console.log = origLog;
+        preview.innerHTML = `<pre>${esc(out)}</pre>`;
+        break;
+      }
+      case 'python': {
+        if (!window.Sk) {
+          preview.innerHTML = noPrev;
+          break;
+        }
+        let out = '';
+        function outf(txt) { out += txt; }
+        Sk.configure({ output: outf, read: f => Sk.builtinFiles['files'][f] });
+        await Sk.misceval.asyncToPromise(() =>
+          Sk.importMainWithBody('<stdin>', false, editor.getValue(), true)
+        )
+        .then(() => { preview.innerHTML = `<pre>${esc(out)}</pre>`; })
+        .catch(err => {
+          preview.innerHTML = `<pre style="color:red">Error: ${esc(err.toString())}</pre>`;
+        });
+        break;
+      }
+      case 'sql': {
+        if (!window.alasql) {
+          preview.innerHTML = noPrev;
+          break;
+        }
+        try {
+          const res = alasql(editor.getValue());
+          if (!Array.isArray(res) || res.length === 0) {
+            preview.innerHTML = '<pre>No result</pre>';
+            break;
+          }
+          // pick first result set
+          const table = Array.isArray(res[0]) ? res[0] : res;
+          const cols  = Array.isArray(table[0])
+                        ? table[0].map((_,i)=>`col${i+1}`)
+                        : Object.keys(table[0]);
+          const head  = `<tr>${cols.map(c=>`<th>${esc(c)}</th>`).join('')}</tr>`;
+          const rows  = table.map(r=>{
+            const vals = Array.isArray(r) ? r : cols.map(c=>r[c]);
+            return `<tr>${vals.map(v=>`<td>${esc(v)}</td>`).join('')}</tr>`;
+          }).join('');
+          preview.innerHTML = `<table>${head}${rows}</table>`;
+        } catch (e) {
+          preview.innerHTML = `<pre style="color:red">Error: ${esc(e.message)}</pre>`;
+        }
+        break;
+      }
+      case 'doc':
+      default:
+        preview.innerHTML = noPrev;
+    }
+  }
+
+  // 9) Load language + optional code override
+  function loadLanguage(lang, codeOverride) {
+    selLang.value = lang;
+    editor.setOption('mode', MODES[lang]);
+    const saved = (codeOverride !== undefined)
+      ? codeOverride
+      : localStorage.getItem(`code-${lang}`) || DEFAULTS[lang];
+    editor.setValue(saved);
+    updatePreview();
+  }
+
+  // 10) Initial load
+  loadLanguage(selLang.value);
+
+  // 11) Event bindings
+  editor.on('change', updatePreview);
+
+  selLang.addEventListener('change', () => {
+    loadLanguage(selLang.value);
+  });
+
+  btnLoad.addEventListener('click', () => fileIn.click());
+  fileIn.addEventListener('change', e => {
+    const file = e.target.files[0];
+    if (!file) return;
+    const ext = file.name.split('.').pop().toLowerCase();
+    const map = {
+      md:'markdown', markdown:'markdown',
+      html:'html', htm:'html',
+      xml:'xml',
+      json:'json',
+      yaml:'yaml', yml:'yaml',
+      js:'javascript',
+      php:'php',
+      rb:'ruby',
+      py:'python',
+      java:'java',
+      c:'c',
+      cpp:'cpp',
+      cs:'csharp',
+      vb:'vb',
+      go:'go',
+      rs:'rust',
+      swift:'swift',
+      kt:'kotlin',
+      sql:'sql',
+      sh:'bash',
+      txt:'text',
+      doc:'doc'
+    };
+    const lang = map[ext] || 'text';
+    const reader = new FileReader();
+    reader.onload = () => loadLanguage(lang, reader.result);
+    reader.readAsText(file);
+    fileIn.value = '';
+  });
+
+  btnSave.addEventListener('click', () => {
+    const lang = selLang.value;
+    const ext  = EXT[lang] || 'txt';
+    const mime = ext === 'doc' ? 'application/msword' : 'text/plain';
+    const blob = new Blob([editor.getValue()], { type: mime });
+    const a = document.createElement('a');
+    a.href = URL.createObjectURL(blob);
+    a.download = `code.${ext}`;
+    a.click();
+    URL.revokeObjectURL(a.href);
+  });
+
+  btnReset.addEventListener('click', () => {
+    if (!confirm('Ripristinare il codice di default?')) return;
+    localStorage.removeItem(`code-${selLang.value}`);
+    editor.setValue(DEFAULTS[selLang.value]);
+    updatePreview();
+  });
+
+  btnTheme.addEventListener('click', () => {
+    const isDark = document.body.classList.toggle('dark');
+    document.body.classList.toggle('light', !isDark);
+    editor.setOption('theme', isDark ? 'dracula' : 'default');
+    const theme = isDark ? 'dark' : 'light';
+    btnTheme.textContent = isDark ? '☀️ Light' : '🌙 Dark';
+    localStorage.setItem('theme', theme);
+  });
+});
