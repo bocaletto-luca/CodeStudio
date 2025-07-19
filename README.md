@@ -2,6 +2,8 @@
 
 A browser-based, multi-language code editor with live preview, syntax highlighting, file load/save/reset, and theme toggling. Built on [CodeMirror 5](https://codemirror.net/), it supports over 20 languages—including Markdown, HTML/CSS, JavaScript, Python, C/C++, C#, SQL, and more—with live rendering where available (Markdown, HTML, JS console, JSON, Python via Skulpt, SQL via AlaSQL).
 
+[![Try the Demo Online](https://img.shields.io/badge/Try%20Demo-Online-blue?style=for-the-badge)](https://bocaletto-luca.github.io/CodeStudio/index.html)
+
 ---
 
 ## Table of Contents
