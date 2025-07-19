@@ -4,33 +4,30 @@
   <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>CodeStudio – Multi-Language Web Editor</title>
-  <meta name="description" content="CodeStudio: editor online con supporto a oltre 20 linguaggi, sintassi evidenziata e anteprima live.">
-  <meta name="author" content="Bocaletto Luca">
-  <meta name="robots" content="index, follow">
-  <meta name="keywords" content="CodeStudio, online code editor, syntax highlighting, live preview, Markdown, HTML, JavaScript, Python, C++, SQL, more">
-
-  <!-- Canonical URL -->
-  <link rel="canonical" href="https://bocaletto-luca.github.io/CodeStudio/">
+  <meta name="description" content="CodeStudio: browser-based multi-language code editor with live preview, syntax highlighting, file load/save/reset, and theme toggling."/>
+  <meta name="author" content="Bocaletto Luca"/>
+  <meta name="robots" content="index, follow"/>
+  <meta name="keywords" content="CodeStudio, code editor, syntax highlighting, live preview, Markdown, HTML, JavaScript, Python, C++, SQL, more"/>
+  <link rel="canonical" href="https://bocaletto-luca.github.io/CodeStudio/index.html"/>
 
   <!-- Open Graph -->
   <meta property="og:title" content="CodeStudio – Multi-Language Web Editor"/>
-  <meta property="og:description" content="Editor online con supporto a oltre 20 linguaggi, anteprima live e tema chiaro/scuro."/>
-  <meta property="og:type" content="website"/>
-  <meta property="og:url" content="https://bocaletto-luca.github.io/CodeStudio/"/>
+  <meta property="og:description" content="Online code editor supporting 20+ languages with live preview and dark/light themes."/>
+  <meta property="og:url" content="https://bocaletto-luca.github.io/CodeStudio/index.html"/>
   <meta property="og:site_name" content="CodeStudio"/>
   <meta property="article:author" content="https://github.com/bocaletto-luca"/>
 
-  <!-- JSON-LD Structured Data -->
+  <!-- JSON-LD -->
   <script type="application/ld+json">
   {
-    "@context": "https://schema.org",
-    "@type": "WebSite",
-    "name": "CodeStudio",
-    "url": "https://bocaletto-luca.github.io/CodeStudio/",
-    "author": {
-      "@type": "Person",
-      "name": "Bocaletto Luca",
-      "url": "https://github.com/bocaletto-luca"
+    "@context":"https://schema.org",
+    "@type":"WebSite",
+    "name":"CodeStudio",
+    "url":"https://bocaletto-luca.github.io/CodeStudio/",
+    "author":{
+      "@type":"Person",
+      "name":"Bocaletto Luca",
+      "url":"https://github.com/bocaletto-luca"
     }
   }
   </script>
@@ -38,7 +35,7 @@
   <!-- Styles -->
   <link rel="stylesheet" href="style.css"/>
 
-  <!-- CodeMirror core + theme -->
+  <!-- CodeMirror CSS & theme -->
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/codemirror@5.65.13/lib/codemirror.min.css"/>
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/codemirror@5.65.13/theme/dracula.min.css"/>
 
@@ -48,12 +45,14 @@
   <script src="https://cdn.jsdelivr.net/npm/skulpt@1.3.0/dist/skulpt-stdlib.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/alasql@1.5.0/dist/alasql.min.js"></script>
 
-  <!-- CodeMirror + modes -->
+  <!-- CodeMirror & modes -->
   <script src="https://cdn.jsdelivr.net/npm/codemirror@5.65.13/lib/codemirror.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/codemirror@5.65.13/mode/markdown/markdown.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/codemirror@5.65.13/mode/htmlmixed/htmlmixed.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/codemirror@5.65.13/mode/css/css.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/codemirror@5.65.13/mode/javascript/javascript.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/codemirror@5.65.13/mode/xml/xml.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/codemirror@5.65.13/mode/yaml/yaml.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/codemirror@5.65.13/mode/python/python.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/codemirror@5.65.13/mode/sql/sql.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/codemirror@5.65.13/mode/clike/clike.min.js"></script>
@@ -63,8 +62,7 @@
   <script src="https://cdn.jsdelivr.net/npm/codemirror@5.65.13/mode/rust/rust.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/codemirror@5.65.13/mode/swift/swift.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/codemirror@5.65.13/mode/kotlin/kotlin.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/codemirror@5.65.13/mode/xml/xml.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/codemirror@5.65.13/mode/yaml/yaml.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/codemirror@5.65.13/mode/shell/shell.min.js"></script>
 
   <!-- App logic -->
   <script src="main.js" defer></script>
@@ -73,7 +71,6 @@
 <body class="light">
   <header>
     <div class="logo">CodeStudio</div>
-
     <select id="language">
       <optgroup label="Markup & Data">
         <option value="markdown">Markdown (.md)</option>
@@ -110,12 +107,10 @@
     </select>
 
     <button id="load">📂 Load</button>
-    <input
-      type="file"
-      id="file-input"
-      accept=".md,.markdown,.html,.htm,.xml,.json,.yaml,.yml,.js,.php,.rb,.py,.java,.c,.cpp,.cs,.vb,.go,.rs,.swift,.kt,.sql,.sh,.txt,.doc"
-      style="display:none"
-    />
+    <input type="file"
+           id="file-input"
+           accept=".md,.markdown,.html,.htm,.xml,.json,.yaml,.yml,.js,.php,.rb,.py,.java,.c,.cpp,.cs,.vb,.go,.rs,.swift,.kt,.sql,.sh,.txt,.doc"
+           style="display:none"/>
 
     <button id="save">💾 Save</button>
     <button id="reset">♻️ Reset</button>
