@@ -4,18 +4,43 @@
   <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>CodeStudio – Multi-Language Web Editor</title>
-  <meta name="description" content="CodeStudio: supporto a oltre 20 linguaggi con evidenziazione sintassi e anteprima dove disponibile.">
+  <meta name="description" content="CodeStudio: editor online con supporto a oltre 20 linguaggi, sintassi evidenziata e anteprima live.">
+  <meta name="author" content="Bocaletto Luca">
+  <meta name="robots" content="index, follow">
+  <meta name="keywords" content="CodeStudio, online code editor, syntax highlighting, live preview, Markdown, HTML, JavaScript, Python, C++, SQL, more">
+
+  <!-- Canonical URL -->
+  <link rel="canonical" href="https://bocaletto-luca.github.io/CodeStudio/">
+
+  <!-- Open Graph -->
+  <meta property="og:title" content="CodeStudio – Multi-Language Web Editor"/>
+  <meta property="og:description" content="Editor online con supporto a oltre 20 linguaggi, anteprima live e tema chiaro/scuro."/>
+  <meta property="og:type" content="website"/>
+  <meta property="og:url" content="https://bocaletto-luca.github.io/CodeStudio/"/>
+  <meta property="og:site_name" content="CodeStudio"/>
+  <meta property="article:author" content="https://github.com/bocaletto-luca"/>
+
+  <!-- JSON-LD Structured Data -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebSite",
+    "name": "CodeStudio",
+    "url": "https://bocaletto-luca.github.io/CodeStudio/",
+    "author": {
+      "@type": "Person",
+      "name": "Bocaletto Luca",
+      "url": "https://github.com/bocaletto-luca"
+    }
+  }
+  </script>
+
+  <!-- Styles -->
   <link rel="stylesheet" href="style.css"/>
 
-  <!-- CodeMirror core + themes -->
-  <link
-    rel="stylesheet"
-    href="https://cdn.jsdelivr.net/npm/codemirror@5.65.13/lib/codemirror.min.css"
-  />
-  <link
-    rel="stylesheet"
-    href="https://cdn.jsdelivr.net/npm/codemirror@5.65.13/theme/dracula.min.css"
-  />
+  <!-- CodeMirror core + theme -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/codemirror@5.65.13/lib/codemirror.min.css"/>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/codemirror@5.65.13/theme/dracula.min.css"/>
 
   <!-- Preview libraries -->
   <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
@@ -101,5 +126,13 @@
     <textarea id="editor"></textarea>
     <div id="preview"></div>
   </div>
+
+  <footer class="app-footer">
+    <p>
+      © 2025 Bocaletto Luca |
+      <a href="https://github.com/bocaletto-luca" target="_blank" rel="noopener">GitHub: bocaletto-luca</a> |
+      <a href="https://github.com/bocaletto-luca/CodeStudio" target="_blank" rel="noopener">Repository: CodeStudio</a>
+    </p>
+  </footer>
 </body>
 </html>
