@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1"/>
+  <title>CodeStudio – Web Code Editor</title>
+  <meta name="description" content="CodeStudio: responsive online editor with syntax highlighting, live preview, Markdown/HTML/JS support.">
+  
+  <!-- YOUR STYLES -->
+  <link rel="stylesheet" href="style.css"/>
+
+  <!-- CodeMirror 5 core + themes -->
+  <link
+    rel="stylesheet"
+    href="https://cdn.jsdelivr.net/npm/codemirror@5.65.13/lib/codemirror.min.css"
+  />
+  <link
+    rel="stylesheet"
+    href="https://cdn.jsdelivr.net/npm/codemirror@5.65.13/theme/dracula.min.css"
+  />
+
+  <!-- marked.js for Markdown preview -->
+  <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+
+  <!-- CodeMirror 5 + modes -->
+  <script src="https://cdn.jsdelivr.net/npm/codemirror@5.65.13/lib/codemirror.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/codemirror@5.65.13/mode/markdown/markdown.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/codemirror@5.65.13/mode/htmlmixed/htmlmixed.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/codemirror@5.65.13/mode/css/css.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/codemirror@5.65.13/mode/javascript/javascript.min.js"></script>
+
+  <!-- Your app logic -->
+  <script src="main.js" defer></script>
+</head>
+
+<body class="light">
+  <header>
+    <div class="logo">CodeStudio</div>
+    <select id="language">
+      <option value="markdown">Markdown</option>
+      <option value="html">HTML &amp; CSS</option>
+      <option value="javascript">JavaScript</option>
+    </select>
+    <button id="save">💾 Save</button>
+    <button id="reset">♻️ Reset</button>
+    <button id="theme">🌙 Dark</button>
+  </header>
+
+  <div id="container">
+    <textarea id="editor"></textarea>
+    <div id="preview"></div>
+  </div>
+</body>
+</html>
