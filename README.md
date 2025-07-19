@@ -4,6 +4,8 @@ A browser-based, multi-language code editor with live preview, syntax highlighti
 
 [![Try the Demo Online](https://img.shields.io/badge/Try%20Demo-Online-blue?style=for-the-badge)](https://bocaletto-luca.github.io/CodeStudio/index.html)
 
+Demo online have problem for limitation server in Github
+
 ---
 
 ## Table of Contents
