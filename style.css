@@ -1,6 +1,5 @@
 /* style.css */
 * { box-sizing:border-box; margin:0; padding:0; }
-
 :root { --header-h:3rem; }
 
 body {
@@ -9,23 +8,18 @@ body {
   flex-direction:column;
   font-family:Arial,sans-serif;
 }
-
 body.light { background:#fdfdfd; color:#333; }
 body.dark  { background:#1e1e1e; color:#ddd; }
 
 /* Header */
 header {
   height:var(--header-h);
-  display:flex;
-  align-items:center;
-  padding:0 1rem;
-  background:#00509e;
-  color:#fff;
+  display:flex; align-items:center;
+  padding:0 1rem; background:#00509e; color:#fff;
 }
 header .logo { font-weight:bold; margin-right:1rem; }
 header select, header button {
-  margin-left:0.5rem;
-  padding:0.3rem 0.6rem;
+  margin-left:0.5rem; padding:0.3rem 0.6rem;
   border:none; border-radius:4px;
   background:#f0f0f0; color:#333;
   cursor:pointer; font-size:0.9rem;
@@ -35,27 +29,28 @@ body.dark header button {
   background:#333; color:#fff;
 }
 
-/* Editor + Preview */
+/* Editor & Preview */
 #container {
-  flex:1;
-  display:flex;
-  overflow:hidden;
+  flex:1; display:flex; overflow:hidden;
 }
-#container > .CodeMirror {
-  flex:1;
-  height:100%;
-}
+#container > .CodeMirror { flex:1; height:100%; }
 #preview {
-  flex:1;
-  padding:1rem;
-  overflow:auto;
+  flex:1; padding:1rem; overflow:auto;
   background:rgba(0,0,0,0.03);
 }
 body.dark #preview {
   background:rgba(255,255,255,0.05);
 }
 
-/* Mobile: stack vertically */
+/* SQL tables */
+#preview table {
+  border-collapse:collapse; width:100%; margin-top:0.5rem;
+}
+#preview th, #preview td {
+  border:1px solid #aaa; padding:0.3rem 0.5rem; text-align:left;
+}
+
+/* Responsive */
 @media(max-width:768px) {
   #container { flex-direction:column; }
   #container > .CodeMirror { height:50%; }
